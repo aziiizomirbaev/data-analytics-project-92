@@ -39,12 +39,13 @@ ORDER BY 2;
 -- Отчет №3. Отчет по дням на английском (monday, tuesday, and etc.)
 SELECT 
 	e.first_name || ' ' || e.last_name AS seller, 
-	TO_CHAR(s.sale_date, 'day') AS day_of_week, 
+	TRIM(TO_CHAR(s.sale_date, 'day')) AS day_of_week, 
 	ROUND(SUM(s.quantity * p.price)) AS income 
 FROM sales AS s 
 LEFT JOIN employees AS e ON s.sales_person_id = e.employee_id
 LEFT JOIN products AS p ON s.product_id = p.product_id 
-GROUP BY s.sale_date, e.first_name, e.last_name 
+GROUP BY TRIM(TO_CHAR(s.sale_date, 'day')), e.first_name, e.last_name, TO_CHAR(s.sale_date, 'ID') 
+ORDER BY TO_CHAR(s.sale_date, 'ID')::INTEGER, seller;
 
 
 	
