@@ -86,7 +86,7 @@ WITH tab AS (
 		c.first_name || ' ' || c.last_name AS customer, 
 		MIN(s.sale_date) AS sale_date,
 		e.first_name || ' ' || e.last_name AS seller, 
-		ROW_NUMBER() OVER(PARTITION BY c.first_name || ' ' || c.last_name)
+		ROW_NUMBER() OVER(PARTITION BY c.first_name || ' ' || c.last_name ORDER BY MIN(s.sale_date))
 	FROM sales AS s 
 	INNER JOIN products AS p USING(product_id)
 	INNER JOIN customers AS c USING(customer_id)
@@ -96,5 +96,5 @@ WITH tab AS (
 ) 
 SELECT customer, sale_date, seller
 FROM tab 
-WHERE row_number = 1 
+WHERE row_number = 1
 ORDER BY customer_id 
