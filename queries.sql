@@ -40,7 +40,7 @@ ORDER BY 2;
 SELECT 
 	e.first_name || ' ' || e.last_name AS seller, 
 	TRIM(TO_CHAR(s.sale_date, 'day')) AS day_of_week, 
-	ROUND(SUM(s.quantity * p.price)) AS income 
+	FLOOR(SUM(s.quantity * p.price)) AS income 
 FROM sales AS s 
 LEFT JOIN employees AS e ON s.sales_person_id = e.employee_id
 LEFT JOIN products AS p ON s.product_id = p.product_id 
@@ -60,7 +60,6 @@ WITH tab AS (
 			WHEN c.age > 40 THEN '40+'
 		END as age_category
 	FROM customers AS c 
-	INNER JOIN sales AS s ON c.customer_id = s.customer_id 
 )
 SELECT age_category, COUNT(age_category) AS age_count
 FROM tab 
